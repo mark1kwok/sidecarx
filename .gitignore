@@ -1,0 +1,48 @@
+# Rust
+/src/server/target/
+**/*.rs.bk
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+.opencode
+.opencode/
+openspec
+openspec/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend
+src/webclient/node_modules/
+
+# Dev Docs
+dev_docs/
+.gitnexus
+
+# Agent CLI
+.antigravitycli/
+
+# Build artifacts & releases
+release/
+# Demo deployment assets (binary + admin; uploaded to Railway, not git)
+deployment/demo/bin/
+deployment/demo/admin/
+
+# Generated / analysis artifacts
+graphify-out/
+.qoder/
+.scratch/
+
+# Secrets / env files
+*.env
+.env.*
+
+# Screenshots
+screenshot.png

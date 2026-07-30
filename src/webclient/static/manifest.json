@@ -1,0 +1,35 @@
+{
+  "name": "Sidecar",
+  "short_name": "Sidecar",
+  "description": "Premium Dev & Admin Panel for Sidecar Host",
+  "start_url": "../",
+  "display": "standalone",
+  "background_color": "#141414",
+  "theme_color": "#141414",
+  "icons": [
+    {
+      "src": "./icon_24_color.svg",
+      "sizes": "24x24",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon_32_color.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon_48_color.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon_512_maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

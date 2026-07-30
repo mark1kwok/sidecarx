@@ -1,0 +1,68 @@
+[package]
+name = "sidecar"
+version = "0.3.2"
+edition = "2021"
+description = "A simple, high-performance Sidecar API for file system access and remote terminal"
+
+[[bin]]
+name = "sidecar"
+path = "main.rs"
+
+[dependencies]
+# Web Framework
+axum = { version = "0.7", features = ["ws", "multipart"] }
+axum-extra = { version = "0.9", features = ["typed-header"] }
+
+# Async Runtime
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["io", "compat"] }
+tokio-tungstenite = "0.24"
+
+
+# Authentication
+jsonwebtoken = "9"
+hmac = "0.12"
+sha2 = "0.10"
+base64 = "0.22"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Environment Configuration
+dotenvy = "0.15"
+
+# Compression
+async_zip = { version = "0.0.18", features = ["tokio", "deflate"] }
+
+# Terminal PTY
+portable-pty = "0.8"
+
+# Utilities
+tower = { version = "0.4", features = ["util"] }
+tower-http = { version = "0.5", features = ["cors", "trace", "fs"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+mime_guess = "2"
+infer = "0.16"
+chrono = { version = "0.4", features = ["serde"] }
+futures = "0.3"
+futures-util = "0.3"
+thiserror = "1"
+
+# File search
+walkdir = "2"
+glob = "0.3"
+
+# System info
+sysinfo = "0.30"
+
+# Thumbnail generation
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "gif", "webp", "bmp", "tiff", "avif", "ico"] }
+png = "0.17"
+md5 = "0.7"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

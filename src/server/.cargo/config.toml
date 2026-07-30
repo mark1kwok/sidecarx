@@ -1,0 +1,5 @@
+[build]
+target-dir = "target"
+# Default to statically linked MUSL build for maximum compatibility across various Linux distributions.
+# This ensures `sidecar` can run on Alpine, generic Ubuntu, distroless, or stripped down containers without glibc errors.
+target = "x86_64-unknown-linux-musl"
