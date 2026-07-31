@@ -45,7 +45,7 @@ The closest alternative in the multi-machine space is [file-explorer](https://gi
 * **Unified Workspace**: Editors and terminals for all connected machines inside one tab dock.
 * **Centralized Config**: Define all target machines in `admin_cfg.json`, switch with one click.
 
-<img src="docs-and-specs/assets/screenshots/settings-machines.png" width="500" alt="Multi-Machine Settings" />
+<img src="docs-and-specs/assets/screenshots/multi-machine-settings.png" width="500" alt="Multi-Machine Settings" />
 
 ### Advanced Lightbox Previewer
 * **Universal Preview**: Overlay-based viewer supporting Video, Image, Audio, PDF, Markdown, and HTML.
@@ -57,7 +57,7 @@ The closest alternative in the multi-machine space is [file-explorer](https://gi
 * **Interactive Terminal**: WebSocket PTY (`xterm.js` / `portable-pty`) with responsive resize.
 * **Jail Isolation**: `SIDECAR_ROOT_DIR` sandboxes all file operations — path-traversal hardened.
 
-<img src="docs-and-specs/assets/screenshots/filebrowser-grid-large.png" width="500" alt="File Browser — Grid View with Thumbnails" />
+<img src="docs-and-specs/assets/screenshots/ui-light-grid-large.png" width="500" alt="File Browser — Grid View with Thumbnails" />
 
 ### UI Design Highlights
 * **Business Sleek**: Professional, minimal, performance-engineered visual style.
@@ -70,7 +70,7 @@ The closest alternative in the multi-machine space is [file-explorer](https://gi
 
 Dark mode is supported out of the box:
 
-<img src="docs-and-specs/assets/screenshots/ui-dark.png" width="500" alt="SidecarX — Dark Mode" />
+<img src="docs-and-specs/assets/screenshots/ui-dark-grid-medium.png" width="500" alt="SidecarX — Dark Mode" />
 
 ---
 
