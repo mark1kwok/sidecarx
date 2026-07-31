@@ -1,6 +1,6 @@
 # Design and Specifications: Web Admin Panel Frontend
 
-**Version:** 0.1.7
+**Version:** 0.1.0
 
 ## 1. Project Overview
 A Single Page Application (SPA) admin panel serving as a File Browser, Terminal, and Code Editor. It is a pure static frontend (source in `src/webclient/`) that connects to the Rust-based HTTP API sidecar backend which provides filesystem, terminal, and auth capabilities.
@@ -21,11 +21,11 @@ A Single Page Application (SPA) admin panel serving as a File Browser, Terminal,
 | **Cookie Auth** | Hybrid usage. Media/Thumbnails rely on `HttpOnly` cookies. | Browser-native resource loading. |
 | **Fetch URL Auth (Remote WebKit)** | `fetchToken` (single `signature.key`) is stored per machine and appended as `?token=` only for remote WebKit media URLs. | Avoids cross-site cookie breakage on Safari while keeping URL auth narrow. |
 
-## 4. UI/UX Features (v0.1.7)
+## 4. UI/UX Features
 
 ### 4.1 Search (Hybrid)
 *   **Client-side Filter**: Typing in the search field filters the currently visible directory listing (debounced 150ms).
-*   **Backend API Search**: Pressing `Enter` triggers a recursive glob search via `GET /admin/api/fs/search` (query wrapped as `*query*`).
+*   **Backend API Search**: Pressing `Enter` triggers a recursive glob search via `GET /api/fs/search` (query wrapped as `*query*`).
 *   **UX**: API search forces list view. Clear (×) or `Esc` restores previous view and path.
 
 ### 4.2 Media Viewer Interactions
@@ -57,7 +57,7 @@ A Single Page Application (SPA) admin panel serving as a File Browser, Terminal,
 
 ### 5.3 Sidebar
 *   **Machine Menu**: Switch between Self and remote instances. Hard reset of tabs on switch.
-*   **Favorites**: Per-machine pinned locations (migration handled for legacy flat arrays).
+*   **Favorites**: Per-machine pinned locations (migration handled for flat arrays).
 *   **Folder Tree**: Click chevron to expand (lazy load); click row to navigate.
 
 ### 5.4 File Browser
@@ -69,14 +69,14 @@ A Single Page Application (SPA) admin panel serving as a File Browser, Terminal,
 ### 5.5 File Upload Logic
 *   **Path-Preserving**: Recursively traverses dropped folders.
 *   **Relative Paths**: Collects relative paths (e.g., `folder/file.txt`) and sends them in a single multipart request.
-*   **API Usage**: Calls `POST /admin/api/fs/upload?path=...` with 3-arg `FormData.append`.
+*   **API Usage**: Calls `POST /api/fs/upload?path=...` with 3-arg `FormData.append`.
 
 ### 5.6 Tool Management (Tabs)
 *   **Terminal**: Singleton per machine. Subprotocol auth via `auth-token.<jwt>`.
 *   **Editor**: Multi-instance Monaco. Dirty-state tracking. Warns before close if unsaved.
 
 ### 5.7 Authentication Handling (Frontend Side)
-*   **Login**: Sends password to `/auth/login`, stores JWT and optional `fetchToken` in `localStorage`, and handles `credentials: 'include'` for cookies.
-*   **Resolution**: Always tries `Authorization: Bearer` header first, then relies on cookie for media/WS.
+*   **Login**: Sends password to `/api/auth/login`, stores JWT and optional `fetchToken` in `localStorage`, and handles `credentials: 'include'` for cookies.
+*   **Resolution**: Always tries `Authorization: Bearer <token>` header first, then relies on cookie for media/WS.
 *   **Subprotocol**: WebSocket constructor uses `['auth-token.' + token]` as second argument.
 *   **Media URL Fallback**: Appends `?token=<fetchToken>` only when machine is remote, browser is WebKit, and fetch token exists.

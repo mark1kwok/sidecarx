@@ -6,7 +6,7 @@ A lightweight, high-performance Rust server for multi-machine file management. C
 
 🌐 **Website**: [sidecarx.dev](https://sidecarx.dev) &nbsp;|&nbsp; 🚀 **Live Demo**: [demo.sidecarx.dev](https://demo.sidecarx.dev)
 
-![SidecarX UI — Dark Mode](docs/assets/screenshots/panel-dark.png)
+![SidecarX UI — Dark Mode](docs-and-specs/assets/screenshots/panel-dark.png)
 
 ---
 
@@ -50,7 +50,7 @@ The closest alternative in the multi-machine space is [file-explorer](https://gi
 * **Security-First Sandboxing**: In-place HTML rendering with native element sandboxing. Token-in-URL isolation — fetch tokens are strictly separate from auth tokens.
 * **Maximized Cache Efficiency**: Default 7-day browser cache TTL. Configurable down to 1 day, 4 hours, or 1 hour for high-security environments.
 
-![SidecarX — Image Preview Lightbox](docs/assets/screenshots/image-preview.png)
+![SidecarX — Image Preview Lightbox](docs-and-specs/assets/screenshots/image-preview.png)
 
 ### Core File & Terminal Capabilities
 * **File Management**: Remote search (regex/glob), upload/download, batch ZIP, directory ops, video frame extraction (optional `ffmpeg`).
@@ -68,7 +68,7 @@ The closest alternative in the multi-machine space is [file-explorer](https://gi
 
 | Dark Mode (Default) | Light Mode |
 |:-------------------:|:----------:|
-| ![Dark Mode](docs/assets/screenshots/panel-dark.png) | ![Light Mode](docs/assets/screenshots/panel-light.png) |
+| ![Dark Mode](docs-and-specs/assets/screenshots/panel-dark.png) | ![Light Mode](docs-and-specs/assets/screenshots/panel-light.png) |
 
 ---
 
@@ -110,7 +110,7 @@ Set via environment variables or `.env`:
 
 ## API Reference
 
-All API specifications live in the `/specs` directory. Refer there for endpoint details, request/response models, and route documentation.
+All API specifications live in the `docs-and-specs/` directory. Refer there for endpoint details, request/response models, and route documentation.
 
 ---
 
