@@ -1,6 +1,6 @@
 FROM alpine:3.21
 
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash ffmpeg
 
 COPY bin/sidecar /opt/sidecar/sidecar
 COPY admin /opt/sidecar/admin
