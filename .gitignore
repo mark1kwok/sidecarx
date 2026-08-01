@@ -31,9 +31,6 @@ dev_docs/
 
 # Build artifacts & releases
 release/
-# Demo deployment assets (binary + admin; uploaded to Railway, not git)
-deployment/demo/bin/
-deployment/demo/admin/
 
 # Generated / analysis artifacts
 graphify-out/

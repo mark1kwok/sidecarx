@@ -90,7 +90,7 @@ For Docker or container runtimes (e.g., Railway).
 * **Container Scripting**: No SSH? Run the install script directly inside the container.
 * **SupervisorD**: Production `Dockerfile` template uses `supervisord` as PID 1.
 * **Co-location**: Bundle your `Main App` side-by-side with SidecarX in the same container.
-* **Config**: See the provided `Dockerfile` and `supervisord.conf` for details.
+* **Config**: See [`docker-deploy/`](docker-deploy/) for the `Dockerfile`, `supervisord.conf`, and `start.sh` template.
 
 ---
 
