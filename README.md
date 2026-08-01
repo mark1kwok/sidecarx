@@ -81,7 +81,7 @@ Choose the method that matches your architecture:
 ### 1. One-Line Script Install
 For local machines or cloud VPS hosts. Downloads, configures, and installs SidecarX:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mark1kwok/sidecarX/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/m1k-rsch/sidecarX/main/install.sh | bash
 ```
 *(On native VPS hosts, SidecarX registers as a standard `systemd` service.)*
 
@@ -120,7 +120,7 @@ All API specifications live in the `docs-and-specs/` directory. Refer there for 
 
 Current release: **v0.1.0**
 
-Pre-built binaries on the [GitHub Releases](https://github.com/mark1kwok/sidecarX/releases) page:
+Pre-built binaries on the [GitHub Releases](https://github.com/m1k-rsch/sidecarX/releases) page:
 
 | Platform | Binary |
 |----------|--------|
@@ -153,4 +153,4 @@ Apache 2.0 © 2026 SidecarX Contributors
 
 - Website: [sidecarx.dev](https://sidecarx.dev)
 - Live Demo: [demo.sidecarx.dev](https://demo.sidecarx.dev)
-- GitHub: [github.com/mark1kwok/sidecarX](https://github.com/mark1kwok/sidecarX)
+- GitHub: [github.com/m1k-rsch/sidecarX](https://github.com/m1k-rsch/sidecarX)
