@@ -68,9 +68,29 @@ The closest alternative in the multi-machine space is [file-explorer](https://gi
 
 ## Gallery
 
-Dark mode is supported out of the box:
+Dark theme:
 
 <img src="docs-and-specs/assets/screenshots/ui-dark-grid-medium.png" width="500" alt="SidecarX — Dark Mode" />
+
+Markdown preview overlay:
+
+<img src="docs-and-specs/assets/screenshots/overlay-md-viewer.png" width="500" alt="Markdown Preview Overlay" />
+
+Media preview overlay:
+
+<img src="docs-and-specs/assets/screenshots/overlay-media-viewer.png" width="500" alt="Media Preview Overlay" />
+
+Mobile responsive:
+
+<img src="docs-and-specs/assets/screenshots/ui-mobile.png" width="500" alt="SidecarX — Mobile File List" />
+
+Mobile responsive (sidebar):
+
+<img src="docs-and-specs/assets/screenshots/ui-mobile-sidebar.png" width="500" alt="SidecarX — Mobile Sidebar" />
+
+Terminal running Hermes Agent:
+
+<img src="docs-and-specs/assets/screenshots/terminal-agent.png" width="500" alt="Terminal — Hermes Agent" />
 
 ---
 
