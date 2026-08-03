@@ -87,9 +87,9 @@ chmod +x "${INSTALL_DIR}/${BINARY}"
 info "Downloading admin panel..."
 ADMIN_ZIP_URL="https://github.com/${REPO}/releases/latest/download/admin.zip"
 if command -v curl &>/dev/null; then
-    curl -fsSL "$ADMIN_ZIP_URL" -o "${INSTALL_DIR}/admin.zip" 2>/dev/null || true
+    curl -fsSL -H "Accept: application/octet-stream" "$ADMIN_ZIP_URL" -o "${INSTALL_DIR}/admin.zip" 2>/dev/null || true
 elif command -v wget &>/dev/null; then
-    wget -q "$ADMIN_ZIP_URL" -O "${INSTALL_DIR}/admin.zip" 2>/dev/null || true
+    wget -q --header="Accept: application/octet-stream" "$ADMIN_ZIP_URL" -O "${INSTALL_DIR}/admin.zip" 2>/dev/null || true
 fi
 
 if [ -f "${INSTALL_DIR}/admin.zip" ] && [ -s "${INSTALL_DIR}/admin.zip" ]; then
