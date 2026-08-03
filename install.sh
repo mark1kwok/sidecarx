@@ -4,7 +4,7 @@ set -euo pipefail
 # SidecarX — One-line installer
 # Usage: curl -fsSL https://raw.githubusercontent.com/m1k-rsch/sidecarX/main/install.sh | bash
 
-REPO="m1k-rsch/sidecarX"
+REPO="m1k-rsch/sidecarx"
 DEFAULT_VERSION="latest"
 INSTALL_DIR="${SIDECAR_INSTALL_DIR:-$HOME/.sidecar}"
 BINARY="sidecar"
@@ -45,14 +45,13 @@ case "$ARCH" in
 esac
 
 # --- Target Triple ---
+# Only these three targets have prebuilt binaries (see README → Releases).
 case "${PLATFORM}-${TARGET_ARCH}" in
     linux-x86_64)   TARGET="x86_64-unknown-linux-musl" ;;
     linux-aarch64)  TARGET="aarch64-unknown-linux-musl" ;;
-    darwin-x86_64)  TARGET="x86_64-apple-darwin" ;;
     darwin-aarch64) TARGET="aarch64-apple-darwin" ;;
-    windows-x86_64) TARGET="x86_64-pc-windows-msvc"; BINARY="sidecar.exe" ;;
     *)
-        warn "No prebuilt binary for ${PLATFORM}-${TARGET_ARCH}"
+        warn "No prebuilt binary for ${PLATFORM}-${TARGET_ARCH} (supported: Linux x86_64/ARM64, macOS Apple Silicon)"
         exit 1
         ;;
 esac
@@ -64,14 +63,8 @@ VERSION="${SIDECAR_VERSION:-$DEFAULT_VERSION}"
 
 if [ "$VERSION" = "latest" ]; then
     DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/sidecar-${TARGET}"
-    if [ "$PLATFORM" = "windows" ]; then
-        DOWNLOAD_URL="${DOWNLOAD_URL}.exe"
-    fi
 else
     DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/sidecar-${TARGET}"
-    if [ "$PLATFORM" = "windows" ]; then
-        DOWNLOAD_URL="${DOWNLOAD_URL}.exe"
-    fi
 fi
 
 # --- Install ---

@@ -46,13 +46,6 @@ jobs:
           - target: aarch64-apple-darwin
             os: macos-latest
             use-cross: false
-          - target: x86_64-apple-darwin
-            os: macos-13
-            use-cross: false
-          - target: x86_64-pc-windows-msvc
-            os: windows-latest
-            use-cross: false
-            ext: .exe
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -81,13 +74,12 @@ jobs:
         shell: bash
         run: |
           mkdir -p build_output
-          EXT="${{ matrix.ext }}"
-          cp "src/server/target/${{ matrix.target }}/release/sidecar${EXT}" "build_output/sidecar-${{ matrix.target }}${EXT}"
+          cp "src/server/target/${{ matrix.target }}/release/sidecar" "build_output/sidecar-${{ matrix.target }}"
 
       - name: Upload Binary to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: build_output/sidecar-${{ matrix.target }}${{ matrix.ext }}
+          files: build_output/sidecar-${{ matrix.target }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -118,7 +110,8 @@ jobs:
 
       - name: Package Frontend
         run: |
-          zip -r admin.zip release/admin
+          cd release
+          zip -r ../admin.zip admin
 
       - name: Upload Frontend to Release
         uses: softprops/action-gh-release@v2
