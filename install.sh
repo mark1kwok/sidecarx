@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # SidecarX — One-line installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/m1k-rsch/sidecarX/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/fgm-builds/sidecarx/main/install.sh | bash
 
-REPO="m1k-rsch/sidecarx"
+REPO="fgm-builds/sidecarx"
 DEFAULT_VERSION="latest"
 INSTALL_DIR="${SIDECAR_INSTALL_DIR:-$HOME/.sidecar}"
 BINARY="sidecar"
