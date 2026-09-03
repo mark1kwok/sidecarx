@@ -6,6 +6,96 @@
             content="width=device-width, initial-scale=1.0, viewport-fit=cover"
             name="viewport"
         />
+        <script>
+            /* iOS focus-zoom guard (iOS + narrow viewport only):
+               Browser tab: iOS Safari 10+ ignores maximum-scale /
+               user-scalable for user pinch but honors them against the
+               automatic focus-zoom of <16px inputs -> merge the two tokens
+               into the viewport meta (Discourse PR #30877 pattern).
+               Home-screen PWA (standalone): iOS enforces those same tokens
+               against user pinch too, so instead never touch the meta and
+               raise focusable controls to 16px, the deterministic stop for
+               the focus auto-zoom. Other platforms keep full user zoom and
+               are never touched. */
+            (function () {
+                var isIOS =
+                    /iP(hone|od|ad)/.test(navigator.userAgent) ||
+                    (/Macintosh/.test(navigator.userAgent) &&
+                        navigator.maxTouchPoints > 1); // iPadOS 13+ desktop-UA masquerade
+                if (!isIOS || !window.matchMedia) return;
+                var isStandalone =
+                    navigator.standalone === true ||
+                    (window.matchMedia &&
+                        window.matchMedia('(display-mode: standalone)').matches);
+                if (isStandalone) {
+                    // Home-screen PWA: inject a 16px font floor for focusable
+                    // controls (iOS auto-zooms only fields < 16px) and leave
+                    // the viewport meta alone so user pinch keeps working.
+                    if (!document.getElementById('ios-zoom-font-floor')) {
+                        var floorStyle = document.createElement('style');
+                        floorStyle.id = 'ios-zoom-font-floor';
+                        floorStyle.textContent =
+                            'input,textarea,select,[contenteditable="true"]{font-size:16px !important;}';
+                        document.head.appendChild(floorStyle);
+                    }
+                    return;
+                }
+
+                var meta = document.querySelector('meta[name="viewport"]');
+                var created = false;
+                if (!meta) {
+                    meta = document.createElement('meta');
+                    meta.name = 'viewport';
+                    created = true;
+                }
+                var stockContent = meta.getAttribute('content');
+                if (created && stockContent === null) {
+                    stockContent = 'width=device-width, initial-scale=1.0';
+                }
+
+                function mergeZoomLock(content) {
+                    var out = [];
+                    var seen = {};
+                    String(content || '')
+                        .split(/[,\s]+/)
+                        .forEach(function (token) {
+                            if (!token) return;
+                            var key = token.split('=')[0];
+                            // Re-added below with forced values (idempotent).
+                            if (key === 'maximum-scale' || key === 'user-scalable') return;
+                            if (seen[key]) return;
+                            seen[key] = true;
+                            out.push(token);
+                        });
+                    out.push('maximum-scale=1', 'user-scalable=no');
+                    return out.join(', ');
+                }
+                function attachIfNeeded() {
+                    if (created && !meta.parentNode) document.head.appendChild(meta);
+                }
+                function applyLock() {
+                    attachIfNeeded();
+                    meta.setAttribute('content', mergeZoomLock(stockContent));
+                }
+                function removeLock() {
+                    if (created) {
+                        if (meta.parentNode) meta.parentNode.removeChild(meta);
+                    } else {
+                        meta.setAttribute('content', stockContent);
+                    }
+                }
+
+                // Reuse the app's own narrow-layout breakpoint (style.css: 800px).
+                var mq = window.matchMedia('(max-width: 799.98px)');
+                function sync() {
+                    if (mq.matches) applyLock();
+                    else removeLock();
+                }
+                sync();
+                if (mq.addEventListener) mq.addEventListener('change', sync);
+                else if (mq.addListener) mq.addListener(sync);
+            })();
+        </script>
         <title>Admin Panel</title>
         <!-- PWA Integration -->
         <link rel="manifest" href="./static/manifest.json" />
