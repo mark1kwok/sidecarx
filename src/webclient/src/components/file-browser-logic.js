@@ -373,12 +373,8 @@ export class FileBrowserLogic extends LitElement {
             return;
         }
 
-        // Editor - apply size guard
-        const MAX_SIZE = 1024 * 1024;
-        if (file.size > MAX_SIZE) {
-            showToast(`File too large (${formatSize(file.size)}).`, 'warning');
-            return;
-        }
+        // Size gating lives in the editor open funnel (openTab('editor'),
+        // utils/editor-open-gate.js) — no per-caller checks (editor/file-open).
 
         this.dispatchEvent(new CustomEvent('app-open-file', {
             bubbles: true,

@@ -4,13 +4,15 @@
  */
 
 const IMAGE_EXTS = new Set([
-    '.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.bmp', '.ico', '.avif'
+    '.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.bmp', '.ico', '.avif',
+    '.tiff', '.tif', '.heic', '.heif', '.heifs', '.jxl',
+    '.raw', '.cr2', '.cr3', '.nef', '.arw', '.rw2'
 ]);
 
 const VIDEO_EXTS = new Set([
     '.mp4', '.m4v', '.webm', '.ogv', '.mov', '.mkv',
-    '.avi', '.flv', '.wmv', '.mpg', '.mpeg',
-    '.3gp', '.rm', '.rmvb', '.vob',
+    '.avi', '.flv', '.wmv', '.mpg', '.mpeg', '.mpe', '.3gp', '.vob',
+    '.m2ts', '.mts', '.dat', '.prores', '.h264', '.h265', '.hevc',
 ]);
 
 const AUDIO_EXTS = new Set([
@@ -24,12 +26,19 @@ const MARKDOWN_EXTS = new Set(['.md', '.markdown']);
 const HTML_EXTS = new Set(['.html', '.htm', '.xhtml']);
 
 /**
- * Extensions eligible for server-side thumbnail generation (sidecar v0.1.4c+).
- * Superset of IMAGE_EXTS ∪ VIDEO_EXTS minus SVG/OGV, plus backend-only types.
+ * Thumbnail-eligible extensions — EXACT MIRROR of the backend support set
+ * (src/server/thumb.rs: SUPPORTED_IMAGE_EXTS ∪ SUPPORTED_VIDEO_EXTS).
+ * Keep in lockstep with the backend; decode failures fail closed
+ * (failure cache → client error → grid falls back to the type icon).
  */
 const THUMB_EXTS = new Set([
+    // images (backend SUPPORTED_IMAGE_EXTS)
     '.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff', '.tif', '.avif', '.ico',
-    '.mp4', '.mkv', '.webm', '.avi', '.mov', '.flv', '.wmv', '.m4v', '.3gp'
+    '.heic', '.heif', '.heifs', '.jxl', '.svg', '.raw', '.cr2', '.cr3', '.nef', '.arw', '.rw2',
+    // videos (backend SUPPORTED_VIDEO_EXTS)
+    '.mp4', '.mkv', '.webm', '.avi', '.mov', '.flv', '.wmv', '.m4v', '.3gp',
+    '.ts', '.m2ts', '.mts', '.dat', '.vob', '.mpg', '.mpeg', '.mpe',
+    '.rm', '.rmvb', '.prores', '.h264', '.h265', '.hevc'
 ]);
 
 /**

@@ -189,7 +189,7 @@ function setupEventListeners() {
                 } else {
                     const path = fileName;
                     const label = fileName.split('/').pop() || fileName;
-                    openTab('editor', { label: label, path: path });
+                    openTab('editor', { label: label, path: path, size: file?.size });
                 }
             }
         });
@@ -211,8 +211,8 @@ function setupEventListeners() {
         // Legacy path/selection/clipboard events removed (D6); breadcrumbs + the
         // menu bar now follow the active session's state in the store.
         browser.addEventListener('app-open-file', (e) => {
-            const { path, name } = e.detail;
-            openTab('editor', { label: name, path: path });
+            const { path, name, size } = e.detail;
+            openTab('editor', { label: name, path: path, size: size });
         });
 
         store.subscribeSelect(

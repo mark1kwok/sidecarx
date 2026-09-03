@@ -21,6 +21,7 @@ import { getActiveMachineId, nextPtyNo } from '../utils/session-manager.js';
 import { findMachineById } from '../utils/config.js';
 import { debug } from '../utils/debug.js';
 import { showConfirmDialog } from '../utils/ui.js';
+import { EDITOR_OPEN_MAX_BYTES, editorOpenAllowed, notifyEditorOpenRefused } from '../utils/editor-open-gate.js';
 
 // #25: single read-only regex. A file is editable by default only for these
 // extensions; everything else opens read-only (toggle to edit).
@@ -251,28 +252,48 @@ export function openTab(type, options = {}) {
     if (type === 'editor') {
         const path = options.path || null;
         const isNew = !!options.isNew;
-        // Dedup by machineId::path - only for an existing file with a path.
-        // A "new file" (no path / isNew) always opens a fresh tab.
-        if (path && !isNew) {
-            const existing = store.getState().workspace.openTabs.find((t) =>
-                t.type === 'editor' && t.machineId === machineId && t.editor && t.editor.path === path);
-            if (existing) {
-                switchTab(existing.id);
-                return existing.id;
+        const createEditorTab = () => {
+            // Dedup by machineId::path - only for an existing file with a path.
+            // A "new file" (no path / isNew) always opens a fresh tab.
+            if (path && !isNew) {
+                const existing = store.getState().workspace.openTabs.find((t) =>
+                    t.type === 'editor' && t.machineId === machineId && t.editor && t.editor.path === path);
+                if (existing) {
+                    switchTab(existing.id);
+                    return existing.id;
+                }
             }
-        }
-        const id = `editor-${++tabIdCounter}`;
-        const filename = options.label || (path ? path.split('/').pop() : 'Untitled');
-        const tab = {
-            id,
-            type: 'editor',
-            machineId,
-            label: filename,
-            editor: { path, isNew, editorId: null },
+            const id = `editor-${++tabIdCounter}`;
+            const filename = options.label || (path ? path.split('/').pop() : 'Untitled');
+            const tab = {
+                id,
+                type: 'editor',
+                machineId,
+                label: filename,
+                editor: { path, isNew, editorId: null },
+            };
+            createEditorWorkspace(tab);
+            store.dispatch('workspace/openTab', tab);
+            return id;
         };
-        createEditorWorkspace(tab);
-        store.dispatch('workspace/openTab', tab);
-        return id;
+        // Fail-safe size gate (editor/file-open): decide BEFORE any content
+        // fetch. Callers holding the FileEntry pass options.size (sync
+        // fast-path); otherwise resolve via a metadata-only listing.
+        if (path && !isNew) {
+            if (typeof options.size === 'number') {
+                if (options.size > EDITOR_OPEN_MAX_BYTES) {
+                    notifyEditorOpenRefused(path.split('/').pop(), options.size);
+                    return null;
+                }
+                return createEditorTab();
+            }
+            editorOpenAllowed({ machineId, path }).then((res) => {
+                if (res.allowed) createEditorTab();
+                else notifyEditorOpenRefused(path.split('/').pop(), null);
+            });
+            return null;
+        }
+        return createEditorTab();
     }
 
     if (type === 'files') {

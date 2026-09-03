@@ -280,12 +280,12 @@ function initUtilities() {
                 const pad = (n) => String(n).padStart(2, '0');
                 const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
                 const filename = `Untitled_${timestamp}.md`;
-                const filePath = `./tmp/${filename}`;
+                const filePath = `/tmp/${filename}`;
 
                 try {
                     // Upload empty file to create it on the backend
                     const emptyBlob = new File([''], filename, { type: 'text/plain; charset=utf-8' });
-                    await getActiveClient().upload('./tmp', [{ file: emptyBlob, name: filename }]);
+                    await getActiveClient().upload('/tmp', [{ file: emptyBlob, name: filename }]);
                     openTab('editor', { label: filename, path: filePath, isNew: true });
                 } catch (err) {
                     // Fallback: open in-memory blank editor

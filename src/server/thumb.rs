@@ -20,11 +20,11 @@ const MAX_IMAGE_SIZE: u64 = 100 * 1024 * 1024; // 100 MB
 // ── Supported Extensions (Lowercase) ───────────────────────────────────────
 
 const SUPPORTED_IMAGE_EXTS: &[&str] = &[
-    "jpg", "jpeg", "png", "gif", "webp", "bmp", "tiff", "avif", "heic", "heif", "heifs", "jxl", "svg", "raw", "cr2", "cr3", "nef", "arw", "rw2"
+    "jpg", "jpeg", "png", "gif", "webp", "bmp", "tiff", "tif", "ico", "avif", "heic", "heif", "heifs", "jxl", "svg", "raw", "cr2", "cr3", "nef", "arw", "rw2"
 ];
 
 const SUPPORTED_VIDEO_EXTS: &[&str] = &[
-    "mp4", "mkv", "webm", "avi", "mov", "wmv", "m4v", "3gp", "ts", "m2ts", "mts", "dat", "vob", "mpg", "mpeg", "mpe", "rm", "rmvb", "prores", "h264", "h265", "hevc"
+    "mp4", "mkv", "webm", "avi", "mov", "wmv", "m4v", "3gp", "flv", "ts", "m2ts", "mts", "dat", "vob", "mpg", "mpeg", "mpe", "rm", "rmvb", "prores", "h264", "h265", "hevc"
 ];
 
 fn is_image_ext(ext: &str) -> bool {
@@ -46,7 +46,8 @@ fn get_mime_by_ext(ext: &str) -> &'static str {
         "gif" => "image/gif",
         "webp" => "image/webp",
         "bmp" => "image/bmp",
-        "tiff" => "image/tiff",
+        "tiff" | "tif" => "image/tiff",
+        "ico" => "image/x-icon",
         "avif" => "image/avif",
         "heic" => "image/heic",
         "heif" => "image/heif",
@@ -63,6 +64,7 @@ fn get_mime_by_ext(ext: &str) -> &'static str {
         "mkv" => "video/x-matroska",
         "webm" => "video/webm",
         "avi" => "video/x-msvideo",
+        "flv" => "video/x-flv",
         "mov" => "video/quicktime",
         "wmv" => "video/x-ms-wmv",
         "m4v" => "video/x-m4v",
