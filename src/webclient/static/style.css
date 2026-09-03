@@ -2657,3 +2657,95 @@ markdown-renderer {
     color: var(--toast-error);
     word-break: break-word;
 }
+
+/* ---- Media fallback (browser engine can't decode/stream the file) ---- */
+.ov-media-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    max-width: 34rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: var(--radius-lg, 12px);
+}
+.ov-media-fallback-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+}
+.ov-media-fallback-msg {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+.ov-media-fallback-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.ov-media-fallback-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-sm, 4px);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+}
+.ov-media-fallback-btn:hover { background: rgba(255, 255, 255, 0.25); }
+.ov-media-fallback-btn .icon { font-size: 1.15rem; }
+
+/* ---- Media fallback (browser engine can't decode/stream the file) ---- */
+.ov-media-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    max-width: 34rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: var(--radius-lg, 12px);
+}
+.ov-media-fallback-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+}
+.ov-media-fallback-msg {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+.ov-media-fallback-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.ov-media-fallback-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-sm, 4px);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+}
+.ov-media-fallback-btn:hover { background: rgba(255, 255, 255, 0.25); }
+.ov-media-fallback-btn .icon { font-size: 1.15rem; }

@@ -26,6 +26,7 @@ export class OverlayViewer extends LitElement {
         _mediaType: { type: String,  state: true },   // 'image' | 'video' | 'audio'
         _mediaList: { type: Array,   state: true },    // [{name, path}]
         _currentIndex: { type: Number, state: true },
+        _mediaError:   { type: String,  state: true },   // set when the engine can't decode/stream; shows fallback panel
         _scale:     { type: Number,  state: true },
         // HTML-specific
         _htmlContent: { type: String, state: true },   // fetched HTML text for srcdoc
@@ -66,6 +67,7 @@ export class OverlayViewer extends LitElement {
     open(filePath, fileList, currentDir) {
         const fileClass = classifyFile(filePath);
         this._fileType = fileClass;
+        this._mediaError = null;
 
         if (fileClass === 'media') {
             // Build filtered media list with full paths
@@ -188,6 +190,8 @@ export class OverlayViewer extends LitElement {
         this._filePath = item.path;
         this._fileName = item.name;
         this._mediaType = getMediaType(item.name) || 'image';
+        // Reset any previous decode error so each file gets a fresh attempt.
+        this._mediaError = null;
         // Reset zoom state on navigation
         this._scale = 1;
     }
@@ -276,8 +280,61 @@ export class OverlayViewer extends LitElement {
         }
     }
 
-    _handleMediaError() {
-        showToast('Unable to load file', 'error');
+    _handleMediaError(e) {
+        const media = e && e.target;
+        const code = media && media.error ? media.error.code : 0;
+        console.error('Media preview failed:', this._fileName, 'MediaError code', code);
+        if (code === 4 || code === 3) {
+            // MEDIA_ERR_SRC_NOT_SUPPORTED / MEDIA_ERR_DECODE: the browser engine
+            // can't demux/decode this container or codec (e.g. .mkv H.264 in
+            // Chrome/Safari). The backend serves the file fine — offer download.
+            this._mediaError =
+                'This browser can\u2019t play this file (container or codec not supported). ' +
+                'The server serves it fine — download it instead.';
+        } else if (code === 2) {
+            this._mediaError = 'Couldn\u2019t stream this file from the server (network error).';
+        } else {
+            this._mediaError = 'Unable to load this file for preview.';
+        }
+    }
+
+    _clearMediaError() {
+        this._mediaError = null;
+    }
+
+    async _downloadFallback() {
+        const name = this._fileName;
+        try {
+            const blob = await getActiveClient().download(this._filePath);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name || 'download';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            showToast('Download started', 'success');
+        } catch (err) {
+            console.error('Fallback download failed:', err);
+            showToast('Download failed', 'error');
+        }
+    }
+
+    _renderMediaFallback() {
+        return html`
+            <div class="ov-media-fallback" @click=${(e) => e.stopPropagation()}>
+                <span class="icon ov-media-fallback-icon">info</span>
+                <p class="ov-media-fallback-msg">${this._mediaError}</p>
+                <div class="ov-media-fallback-actions">
+                    <button class="ov-media-fallback-btn" @click=${() => this._downloadFallback()}>
+                        <span class="icon">download</span><span class="text">Download</span>
+                    </button>
+                    <button class="ov-media-fallback-btn" @click=${() => this._clearMediaError()}>
+                        <span class="icon">refresh</span><span class="text">Retry</span>
+                    </button>
+                </div>
+            </div>`;
     }
 
     _handleIframeError() {
@@ -361,14 +418,15 @@ export class OverlayViewer extends LitElement {
     }
 
     _renderMediaElement(src) {
+        if (this._mediaError) return this._renderMediaFallback();
         switch (this._mediaType) {
             case 'video':
                 return html`<div class="ov-media-area" @click=${(e) => e.stopPropagation()}>
-                    <video class="ov-video" src=${src} crossorigin=${getActiveClient().isSelf ? undefined : "use-credentials"} controls autoplay @error=${() => this._handleMediaError()} @click=${(e) => e.stopPropagation()}></video>
+                    <video class="ov-video" src=${src} crossorigin=${getActiveClient().isSelf ? undefined : "use-credentials"} controls autoplay @error=${(e) => this._handleMediaError(e)} @click=${(e) => e.stopPropagation()}></video>
                 </div>`;
             case 'audio':
                 return html`<div class="ov-media-area" @click=${(e) => e.stopPropagation()}>
-                    <audio class="ov-audio" src=${src} crossorigin=${getActiveClient().isSelf ? undefined : "use-credentials"} controls autoplay @error=${() => this._handleMediaError()} @click=${(e) => e.stopPropagation()}></audio>
+                    <audio class="ov-audio" src=${src} crossorigin=${getActiveClient().isSelf ? undefined : "use-credentials"} controls autoplay @error=${(e) => this._handleMediaError(e)} @click=${(e) => e.stopPropagation()}></audio>
                 </div>`;
             default: // image -> extended-image with fullscreen pan area
                 return html`<div class="ov-media-fill">
